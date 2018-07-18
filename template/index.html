@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ICO</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../assets/web3min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+</head>
+<body>
+<div class="row" align="center" style="margin-top: 20vh">
+
+    <img src="http://bitcoin-4k.com/wp-content/uploads/2017/06/Ethereum-Classic-ETC.png"><br>
+    <input type = "text" id = "inputEthers" style="width: 200px"><br>
+    <div class="waves-effect waves-light btn sendButton" style="cursor: pointer; background-color: #32ff4d;">
+        Send
+    </div>
+    <br>
+    <div>Баланс: <span class="balance"></span></div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // let Web3 = require('web3');
+        var web3 = new Web3(Web3.givenProvider);
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+            console.log('OK');
+        }
+        else {
+            alert('You have to install MetaMask !');
+        }
+
+        
+        web3.eth.getAccounts(function(error, result) {
+            if(error != null)
+                console.log("Couldn't get accounts");
+                web3.eth.getBalance(result[0], function(error, result) {
+                    console.log(result);
+                    $('.balance').text(result);
+                });
+
+            $(".sendButton").click(function () {
+                const contractAddress = "0x8cD5DD16c0e9E1349f4E7eBFe0859f74E918f4c1";
+                web3.eth.sendTransaction({
+                    to: contractAddress,
+                    from: result[0],
+                    value: $('#inputEthers').val() * 10**18
+                },
+                function (error) {
+                    console.log(error);
+                }
+            );
+            });
+        });
+        
+
+
+    });
+</script>
+</body>
+</html>
